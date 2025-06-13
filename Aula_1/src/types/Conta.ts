@@ -1,6 +1,6 @@
-import { GrupoTransacao } from "./GrupoTransacao";
-import { TipoTransacao } from "./TipoTransacao";
-import { Transacao } from "./Transacao";
+import { GrupoTransacao } from "./GrupoTransacao.js";
+import { TipoTransacao } from "./TipoTransacao.js";
+import { Transacao } from "./Transacao.js";
 
 export class Conta {
     nome: string;
@@ -15,6 +15,7 @@ export class Conta {
     constructor(nome: string) {
         this.nome = nome;
     }
+
     getGruposTransacoes(): GrupoTransacao[] {
         const gruposTransacoes: GrupoTransacao[] = [];
         const listaTransacoes: Transacao[] = structuredClone(this.transacoes);
@@ -39,9 +40,11 @@ export class Conta {
     getSaldo() {
         return this.saldo;
     }
+
     getDataAcesso(): Date {
         return new Date();
     }
+
     registrarTransacao(novaTransacao: Transacao): void {
         if (novaTransacao.tipoTransacao == TipoTransacao.DEPOSITO) {
             this.depositar(novaTransacao.valor);

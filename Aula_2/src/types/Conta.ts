@@ -1,11 +1,11 @@
-import { GrupoTransacao } from "./GrupoTransacao";
-import { TipoTransacao } from "./TipoTransacao";
-import { Transacao } from "./Transacao";
+import { GrupoTransacao } from "./GrupoTransacao.js";
+import { TipoTransacao } from "./TipoTransacao.js";
+import { Transacao } from "./Transacao.js";
 
 export class Conta {
-    nome: string;
-    saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0;
-    transacoes: Transacao[] = JSON.parse(localStorage.getItem("transacoes"), (key: string, value: any) => {
+    protected nome: string;
+    protected saldo: number = JSON.parse(localStorage.getItem("saldo")) || 0;
+    private transacoes: Transacao[] = JSON.parse(localStorage.getItem("transacoes"), (key: string, value: any) => {
         if (key === "data") {
             return new Date(value);
         }
@@ -15,6 +15,11 @@ export class Conta {
     constructor(nome: string) {
         this.nome = nome;
     }
+
+    public getTitular() {
+        return this.nome;
+    }
+
     getGruposTransacoes(): GrupoTransacao[] {
         const gruposTransacoes: GrupoTransacao[] = [];
         const listaTransacoes: Transacao[] = structuredClone(this.transacoes);
@@ -39,9 +44,11 @@ export class Conta {
     getSaldo() {
         return this.saldo;
     }
+
     getDataAcesso(): Date {
         return new Date();
     }
+
     registrarTransacao(novaTransacao: Transacao): void {
         if (novaTransacao.tipoTransacao == TipoTransacao.DEPOSITO) {
             this.depositar(novaTransacao.valor);
@@ -82,5 +89,6 @@ export class Conta {
 }
 
 const conta = new Conta("Joana da Silva Olveira");
+// console.log(conta.saldo);
 
 export default conta;
